@@ -20,6 +20,6 @@ class Config
 
     private static function getFromFile()
     {
-        return require_once(__DIR__ . 'config' . DIRECTORY_SEPARATOR . 'headers.php');
+        return include(__DIR__ . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'headers.php');
     }
 }
