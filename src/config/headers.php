@@ -10,6 +10,6 @@ return [
         'dns' => 'X-DNS-Prefetch-Control: off',
     ],
     'disabled' => [
-        'powered' => 'x-powered-by'
+        'powered' => 'X-Powered-By'
     ],
 ];
