@@ -49,7 +49,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
         $this->assertTrue(array_key_exists('xss', $this->config));
     }
 
-    public function testShouldHaveFrame()
+    public function testShouldHaveFrameOptions()
     {
         $this->assertTrue(array_key_exists('frame', $this->config));
     }
