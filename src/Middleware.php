@@ -19,16 +19,10 @@ class Middleware
         return $this->headers;
     }
 
-    protected function remove($response)
-    {
-        array_map(function ($header) use ($response) {
-            $response->headers->remove($header);
-        }, $this->headers()->disabled());
-    }
-
     protected function add($response)
     {
         $headers = $this->headers()->get();
+        
         while (list($key, $value) = each($headers)) {
             $response->headers->set($key, $value);
         }
@@ -39,7 +33,6 @@ class Middleware
         $response = $next($request);
 
         $this->add($response);
-        $this->remove($response);
 
         return $response;
     }

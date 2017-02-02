@@ -6,7 +6,6 @@ class Bag
 {
 
     protected $headers = [];
-    protected $disabled = [];
 
     public function __construct(array $config = [])
     {
@@ -15,24 +14,28 @@ class Bag
         }
 
         if (array_key_exists('disabled', $config) && is_array($config['disabled'])) {
-            $this->disable($config['disabled']);
+            $this->remove($config['disabled']);
         }
     }
 
-    public function get($header = null, $disabled = false)
+    public function get($header = false)
     {
-        $headers = $disabled ? $this->disabled : $this->headers;
-
         if (!$header) {
-            return $headers;
+            return $this->headers;
         }
 
-        return array_key_exists($header, $headers) ? $headers[$header] : false;
+        return array_key_exists($header, $this->headers) ? $this->headers[$header] : false;
     }
 
-    public function disabled()
+    public function set($header)
     {
-        return $this->get(null, true);
+        list($key, $value) = explode(':', $header);
+
+        if (!empty($key) && !empty($value)) {
+            $this->headers[$this->transformKey($key)] = $value;
+        }
+
+        return $this;
     }
 
     protected function transformKey($key)
@@ -44,39 +47,30 @@ class Bag
     {
         if (is_array($header)) {
             array_map(function ($h) {
-                $this->add($h);
+                $this->set($h);
             }, $header);
         }
 
         if (is_string($header)) {
-            list($key, $value) = explode(':', $header);
-
-            if (!empty($key) && !empty($value)) {
-                $this->headers[$this->transformKey($key)] = $value;
-            }
+            $this->set($header);
         }
     }
 
     public function remove($header)
     {
-        if (array_key_exists($header, $this->headers)) {
-            unset($this->headers[$header]);
-        }
-    }
-
-    public function disable($header)
-    {
         if (is_array($header)) {
             array_map(function ($h) {
-                $this->disable($h);
+                $this->remove($h);
             }, $header);
         }
 
         if (is_string($header)) {
-            $this->remove($header);
+            if ($this->get($header)) {
+                unset($this->headers[$header]);
+            }
 
-            if (!in_array($header, $this->disabled)) {
-                $this->disabled[] = $header;
+            if (function_exists('header_remove') && !headers_sent()) {
+                header_remove($header);
             }
         }
     }
