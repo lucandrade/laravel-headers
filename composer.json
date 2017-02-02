@@ -10,7 +10,7 @@
     },
     "autoload": {
         "psr-4":{
-            "Lucandrade\\Headers\\": "src/"
+            "Lucandrade\\SecureHeaders\\": "src/"
         }
     },
     "authors": [

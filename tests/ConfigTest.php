@@ -1,6 +1,6 @@
 <?php
 
-use Lucandrade\Headers\Config;
+use Lucandrade\SecureHeaders\Config;
 
 class ConfigTest extends PHPUnit_Framework_TestCase
 {

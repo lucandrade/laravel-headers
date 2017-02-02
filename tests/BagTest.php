@@ -1,7 +1,7 @@
 <?php
 
-use Lucandrade\Headers\Config;
-use Lucandrade\Headers\Bag;
+use Lucandrade\SecureHeaders\Config;
+use Lucandrade\SecureHeaders\Bag;
 
 class BagTest extends PHPUnit_Framework_TestCase
 {

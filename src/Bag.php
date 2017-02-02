@@ -1,6 +1,6 @@
 <?php
 
-namespace Lucandrade\Headers;
+namespace Lucandrade\SecureHeaders;
 
 class Bag
 {

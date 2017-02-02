@@ -1,10 +1,10 @@
 <?php
 
-namespace Lucandrade\Headers;
+namespace Lucandrade\SecureHeaders;
 
 use Closure;
-use Lucandrade\Headers\Config;
-use Lucandrade\Headers\Bag;
+use Lucandrade\SecureHeaders\Config;
+use Lucandrade\SecureHeaders\Bag;
 
 class Middleware
 {
