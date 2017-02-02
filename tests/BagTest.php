@@ -61,8 +61,23 @@ class BagTest extends PHPUnit_Framework_TestCase
         $this->assertTrue(!empty($this->class->get()['X-DNS-Prefetch-Control']));
     }
 
-    public function testShouldHaveHidePoweredBy()
+    public function testShouldDisableHidePoweredBy()
     {
         $this->assertTrue(in_array('x-powered-by', $this->class->disabled()));
+    }
+
+    public function testShouldNotHaveStrictTransport()
+    {
+        $header = 'Strict-Transport-Security';
+        $this->class->remove($header);
+        $this->assertFalse(array_key_exists($header, $this->class->get()));
+    }
+
+    public function testShouldNotDisableHidePoweredBy()
+    {
+        $header = 'x-powered-by';
+        $this->class->disable($header);
+        $this->assertTrue(in_array($header, $this->class->disabled()));
+        $this->assertFalse(array_key_exists($header, $this->class->get()));
     }
 }
