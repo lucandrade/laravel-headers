@@ -66,7 +66,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testShouldHaveHidePoweredBy()
     {
-        $this->config = $this->loadConfig('remove');
+        $this->config = $this->loadConfig('disabled');
         $this->assertTrue(array_key_exists('powered', $this->config));
     }
 }

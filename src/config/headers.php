@@ -9,7 +9,7 @@ return [
         'nosniff' => 'X-Content-Type-Options: nosniff',
         'dns' => 'X-DNS-Prefetch-Control: off',
     ],
-    'remove' => [
+    'disabled' => [
         'powered' => 'x-powered-by'
     ],
 ];
