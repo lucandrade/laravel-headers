@@ -17,6 +17,7 @@ class Bag
         'nosniff' => \Lucandrade\SecureHeaders\Headers\NoSniff::class,
         'dns' => \Lucandrade\SecureHeaders\Headers\DnsPrefetch::class,
         'poweredby' => \Lucandrade\SecureHeaders\Headers\PoweredBy::class,
+        'server' => \Lucandrade\SecureHeaders\Headers\Server::class,
     ];
 
     public function __construct(array $headers = [])

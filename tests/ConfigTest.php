@@ -62,4 +62,9 @@ class ConfigTest extends PHPUnit_Framework_TestCase
     {
         $this->assertTrue(array_key_exists('poweredby', $this->config));
     }
+
+    public function testShouldHaveServer()
+    {
+        $this->assertTrue(array_key_exists('server', $this->config));
+    }
 }

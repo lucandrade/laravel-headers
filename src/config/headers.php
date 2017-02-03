@@ -8,4 +8,5 @@ return [
     'nosniff' => 'nosniff',
     'dns' => 'off',
     'poweredby' => '',
+    'server' => '',
 ];

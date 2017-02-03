@@ -67,6 +67,12 @@ class BagTest extends PHPUnit_Framework_TestCase
         $this->assertTrue(in_array('X-Powered-By', $removed));
     }
 
+    public function testShouldDisableServer()
+    {
+        $removed = $this->class->remove();
+        $this->assertTrue(in_array('Server', $removed));
+    }
+
     public function testShouldNotHaveStrictTransport()
     {
         $header = 'Strict-Transport-Security';
