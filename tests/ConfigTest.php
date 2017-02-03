@@ -14,15 +14,9 @@ class ConfigTest extends PHPUnit_Framework_TestCase
         $this->config = $this->loadConfig();
     }
 
-    protected function loadConfig($type = 'add')
+    protected function loadConfig()
     {
-        $config = Config::get();
-
-        if (array_key_exists($type, $config)) {
-            return $config[$type];
-        }
-
-        return $config;
+        return Config::get();
     }
 
     protected function mockConfig($return = false)
@@ -36,7 +30,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testShouldHaveStrictTransport()
     {
-        $this->assertTrue(array_key_exists('hsts', $this->config));
+        $this->assertTrue(array_key_exists('sts', $this->config));
     }
 
     public function testShouldHaveContentSecurityPolicy()
@@ -66,7 +60,6 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testShouldHaveHidePoweredBy()
     {
-        $this->config = $this->loadConfig('disabled');
-        $this->assertTrue(array_key_exists('powered', $this->config));
+        $this->assertTrue(array_key_exists('poweredby', $this->config));
     }
 }

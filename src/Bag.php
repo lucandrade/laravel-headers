@@ -7,15 +7,21 @@ class Bag
 
     protected $headers = [];
 
-    public function __construct(array $config = [])
-    {
-        if (array_key_exists('add', $config) && is_array($config['add'])) {
-            $this->add($config['add']);
-        }
+    protected $removed = [];
 
-        if (array_key_exists('disabled', $config) && is_array($config['disabled'])) {
-            $this->remove($config['disabled']);
-        }
+    protected $config = [
+        'sts' => \Lucandrade\SecureHeaders\Headers\StrictTransportSecurity::class,
+        'csp' => \Lucandrade\SecureHeaders\Headers\ContentSecurityPolicy::class,
+        'xss' => \Lucandrade\SecureHeaders\Headers\XssProtection::class,
+        'frame' => \Lucandrade\SecureHeaders\Headers\FrameOptions::class,
+        'nosniff' => \Lucandrade\SecureHeaders\Headers\NoSniff::class,
+        'dns' => \Lucandrade\SecureHeaders\Headers\DnsPrefetch::class,
+        'poweredby' => \Lucandrade\SecureHeaders\Headers\PoweredBy::class,
+    ];
+
+    public function __construct(array $headers = [])
+    {
+        $this->set($headers);
     }
 
     public function get($header = false)
@@ -27,12 +33,21 @@ class Bag
         return array_key_exists($header, $this->headers) ? $this->headers[$header] : false;
     }
 
-    public function set($header)
+    public function set($header, $value = null)
     {
-        list($key, $value) = explode(':', $header);
+        if (is_array($header)) {
+            while (list($key, $value) = each($header)) {
+                $this->set($key, $value);
+            }
+        }
 
-        if (!empty($key) && !empty($value)) {
-            $this->headers[$this->transformKey($key)] = $value;
+        if (!empty($header) && is_string($header)) {
+            if (array_key_exists($header, $this->config)) {
+                $class = new $this->config[$header];
+                $class->apply($value, $this);
+            } else {
+                $this->headers[$this->transformKey($header)] = $value;
+            }
         }
 
         return $this;
@@ -43,35 +58,29 @@ class Bag
         return $key;
     }
 
-    public function add($header)
+    public function remove($header = false)
     {
-        if (is_array($header)) {
+        if (!$header) {
+            $removed = $this->removed;
             array_map(function ($h) {
-                $this->set($h);
-            }, $header);
+                if ($this->get($h)) {
+                    unset($this->headers[$h]);
+                }
+
+                if (function_exists('header_remove') && !headers_sent()) {
+                    header_remove($h);
+                }
+            }, $removed);
+
+            return $removed;
         }
 
-        if (is_string($header)) {
-            $this->set($header);
-        }
-    }
-
-    public function remove($header)
-    {
-        if (is_array($header)) {
-            array_map(function ($h) {
-                $this->remove($h);
-            }, $header);
+        if (!in_array($header, $this->removed)) {
+            $this->removed[] = $header;
         }
 
-        if (is_string($header)) {
-            if ($this->get($header)) {
-                unset($this->headers[$header]);
-            }
-
-            if (function_exists('header_remove') && !headers_sent()) {
-                header_remove($header);
-            }
+        if ($this->get($header)) {
+            unset($this->headers[$header]);
         }
     }
 }

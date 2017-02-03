@@ -63,7 +63,8 @@ class BagTest extends PHPUnit_Framework_TestCase
 
     public function testShouldDisableHidePoweredBy()
     {
-        $this->assertFalse(array_key_exists('X-Powered-By', $this->class->get()));
+        $removed = $this->class->remove();
+        $this->assertTrue(in_array('X-Powered-By', $removed));
     }
 
     public function testShouldNotHaveStrictTransport()
@@ -73,9 +74,11 @@ class BagTest extends PHPUnit_Framework_TestCase
         $this->assertFalse(array_key_exists($header, $this->class->get()));
     }
 
-    public function testShouldNotDisableHidePoweredBy()
+    public function testShouldHaveCustomHeader()
     {
-        $header = 'X-Powered-By';
-        $this->assertFalse(array_key_exists($header, $this->class->get()));
+        $customHeader = 'X-Custom';
+        $customValue = '123';
+        $this->class->set($customHeader, $customValue);
+        $this->assertTrue(array_key_exists($customHeader, $this->class->get()));
     }
 }
