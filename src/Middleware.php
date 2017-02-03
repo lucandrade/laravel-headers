@@ -21,7 +21,7 @@ class Middleware
 
     protected function remove($response)
     {
-        $removed = $this->headers->remove();
+        $removed = $this->headers()->remove();
 
         array_map(function ($header) use ($response) {
             $response->headers->remove($header);
